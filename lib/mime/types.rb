@@ -584,17 +584,21 @@ module MIME
     attr_reader :data_version
 
     def initialize(data_version = nil)
-      @type_variants    = Hash.new { |h, k| h[k] = [] }
-      @extension_index  = Hash.new { |h, k| h[k] = [] }
+      @type_variants    = {}
+      @extension_index  = {}
       @data_version = data_version
     end
 
     def add_type_variant(mime_type) #:nodoc:
-      @type_variants[mime_type.simplified] << mime_type
+      ary = (@type_variants[mime_type.simplified] ||= [])
+      ary << mime_type
     end
 
     def index_extensions(mime_type) #:nodoc:
-      mime_type.extensions.each { |ext| @extension_index[ext] << mime_type }
+      mime_type.extensions.each do |ext|
+        ary = (@extension_index[ext] ||= [])
+        ary << mime_type
+      end
     end
 
     def defined_types #:nodoc:
@@ -639,7 +643,7 @@ module MIME
       elsif type_id.kind_of?(MIME::Type)
         matches = [type_id]
       else
-        matches = @type_variants[MIME::Type.simplified(type_id)]
+        matches = @type_variants[MIME::Type.simplified(type_id)] ||= []
       end
 
       matches.delete_if { |e| not e.complete? } if flags[:complete]
@@ -660,7 +664,7 @@ module MIME
     #     => [image/gif]
     def type_for(filename, platform = false)
       ext = filename.chomp.downcase.gsub(/.*\./o, '')
-      list = @extension_index[ext]
+      list = @extension_index[ext] ||= []
       list.delete_if { |e| not e.platform? } if platform
       list
     end
