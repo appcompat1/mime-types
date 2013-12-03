@@ -19,4 +19,9 @@ task :objects do
   end
 end
 
+task :build_gem do
+  system "script/build_marshal_cache.rb"
+  system "gem build mime-types.gemspec"
+end
+
 task :default => :test
