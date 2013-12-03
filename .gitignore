@@ -7,3 +7,4 @@ pkg
 publish
 coverage
 Gemfile.lock
+lib/mime/types.marshal-data
