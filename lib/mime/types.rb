@@ -849,7 +849,7 @@ module MIME
 
     cache_file = File.expand_path("../types.marshal-data", __FILE__)
     if File.exist?(cache_file)
-      @__types__ = Marshal.load(File.read(cache_file))
+      @__types__ = Marshal.load(File.binread(cache_file))
     else
       files = Dir[File.join(File.dirname(__FILE__), 'types', '*')]
       MIME::Types::STARTUP = true unless $DEBUG
