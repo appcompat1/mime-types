@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "mime-types"
-  s.version = "1.19.1.github1"
+  s.version = "1.19.1.github2"
 
   s.authors = ["Austin Ziegler"]
   s.date = "2012-06-21"
